@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Guard the Pride - Lion Kingdom Defense</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="game-container">
+        
+        <canvas id="gameCanvas"></canvas>
+
+        <div id="ui-layer">
+            <div class="hud-top">
+                <div class="score-box">
+                    <span>SCORE:</span>
+                    <span id="scoreEl">0</span>
+                </div>
+                <div class="health-box">
+                    <span>PRIDE HEALTH</span>
+                    <div class="bar-container">
+                        <div id="healthBar" class="bar-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="roar-container">
+                <div class="roar-label">ROAR POWER</div>
+                <div class="bar-container roar-bg">
+                    <div id="roarBar" class="bar-fill roar-fill"></div>
+                </div>
+                <div id="roar-ready-msg">ROAR READY! (TAP LION)</div>
+            </div>
+        </div>
+
+        <div id="start-screen" class="modal active">
+            <div class="modal-content">
+                <h1 class="title">Guard the Pride</h1>
+                <p class="story">
+                    Defend the Lion Kingdom from the Shredders!
+                    <br><br>
+                    • <strong>Tap enemies</strong> to destroy them.
+                    <br>
+                    • Fill the <strong>Roar Meter</strong> to unleash a blast.
+                    <br>
+                    • <strong>Tap the Lion</strong> when fully charged to ROAR!
+                </p>
+                <button id="startBtn">PROTECT THE KINGDOM</button>
+            </div>
+        </div>
+
+        <div id="game-over-screen" class="modal">
+            <div class="modal-content">
+                <h1 class="title">The Pride Has Fallen</h1>
+                <p>Your watch has ended.</p>
+                <h2 id="finalScore">Score: 0</h2>
+                <button id="restartBtn">TRY AGAIN</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
