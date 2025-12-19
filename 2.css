@@ -1,0 +1,195 @@
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none; /* Prevents zooming on mobile */
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    background-color: #2c3e50;
+}
+
+#game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, #fceeb5 0%, #e0ac48 70%, #c48e2b 100%);
+    cursor: crosshair;
+}
+
+/* UI Layer */
+#ui-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Let clicks pass through to canvas */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.hud-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Text Styles */
+.score-box, .health-box, .roar-label {
+    font-weight: bold;
+    color: #2b3a6b; /* Blue from the image header */
+    text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+    font-size: 1.2rem;
+}
+
+/* Bars */
+.bar-container {
+    width: 200px;
+    height: 20px;
+    background: rgba(0,0,0,0.3);
+    border: 2px solid #2b3a6b;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-left: 10px;
+    position: relative;
+}
+
+.bar-fill {
+    height: 100%;
+    width: 100%;
+    background: #e74c3c; /* Health Red */
+    transition: width 0.2s;
+}
+
+/* Roar Specifics */
+.roar-container {
+    align-self: center;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.roar-bg {
+    width: 300px;
+    height: 25px;
+    margin: 5px auto;
+}
+
+.roar-fill {
+    width: 0%;
+    background: linear-gradient(90deg, #f1c40f, #f39c12); /* Gold */
+    box-shadow: 0 0 10px #f1c40f;
+}
+
+#roar-ready-msg {
+    color: #c0392b;
+    font-weight: 900;
+    font-size: 1.2rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+    text-shadow: 0 0 5px white;
+    animation: pulse 1s infinite;
+}
+
+/* Modals (Start / Game Over) */
+.modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(43, 58, 107, 0.9); /* Blue overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.modal.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 500px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    border-top: 10px solid #c0392b;
+}
+
+.title {
+    color: #2b3a6b;
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.story {
+    color: #555;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    font-size: 1.1rem;
+}
+
+button {
+    background: #c0392b;
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.1s, background 0.2s;
+    box-shadow: 0 5px 0 #922b21;
+}
+
+button:active {
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 #922b21;
+}
+
+button:hover {
+    background: #e74c3c;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .hud-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .bar-container {
+        width: 150px;
+    }
+    .title { font-size: 1.8rem; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}

@@ -19,8 +19,18 @@ const UI = {
 const lionImg = new Image();
 lionImg.src = 'lion.png';
 
-const shredderImg = new Image();
-shredderImg.src = 'shredder.png';
+// 6 Alag-alag enemies images load karna
+const enemyImages = {};
+const directions = [
+    'bottom-left', 'bottom-center', 'bottom-right', 
+    'top-left', 'top-center', 'top-right'
+];
+
+directions.forEach(dir => {
+    enemyImages[dir] = new Image();
+    // Dhyan de: Folder ka naam 'Enimies' aapke screenshot ke hisab se hai
+    enemyImages[dir].src = `Enimies/${dir}.png`; 
+});
 
 // Game State
 let gameRunning = false;
@@ -62,7 +72,7 @@ class Player {
         // Draw LION Image
         // Logic: Draw image centered on x,y. 
         // Size is slightly larger than hitbox (radius * 2.5) for better visual
-        const size = this.radius * 2.5; 
+        const size = this.radius * 4; 
         
         // If image is loaded, draw it. Otherwise fallback to circle just in case.
         if (lionImg.complete) {
@@ -125,34 +135,59 @@ class Player {
 
 class Enemy {
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.radius = 20; // Hitbox radius
-        this.velocity = {
-            x: 0,
-            y: 0
-        };
-        // Calculate speed towards player
-        const angle = Math.atan2(player.y - this.y, player.x - this.x);
-        const speed = (1 + Math.random()) * difficultyMultiplier; 
-        this.velocity.x = Math.cos(angle) * speed;
-        this.velocity.y = Math.sin(angle) * speed;
+    this.x = x;
+    this.y = y;
+    this.radius = 20; 
+    
+    // --- NAYA LOGIC: Sahi Image select karna ---
+    let vPos = (this.y < canvas.height / 2) ? 'top' : 'bottom'; // Upar hai ya niche?
+    let hPos = 'center'; // Default center maan lete hain
+
+    // Screen ko 3 hisso me baant diya (Left, Center, Right)
+    const oneThird = canvas.width / 3;
+
+    if (this.x < oneThird) {
+        hPos = 'left';
+    } else if (this.x > oneThird * 2) {
+        hPos = 'right';
     }
+
+    // Image key set karna (e.g., 'top-left' ya 'bottom-center')
+    this.imageKey = `${vPos}-${hPos}`;
+    // -------------------------------------------
+
+    this.velocity = { x: 0, y: 0 };
+    
+    // Baki velocity calculation same rahega...
+    const angle = Math.atan2(player.y - this.y, player.x - this.x);
+    const speed = (1 + Math.random()) * difficultyMultiplier; 
+    this.velocity.x = Math.cos(angle) * speed;
+    this.velocity.y = Math.sin(angle) * speed;
+}
 
     draw() {
-        // Draw SHREDDER Image
-        const size = this.radius * 2.5; // Make image slightly bigger than hitbox
+    const size = this.radius * 3.5; // Image size thoda bada
+    
+    // Jo image key humne constructor me select ki thi, wo image nikalo
+    const img = enemyImages[this.imageKey];
 
-        if (shredderImg.complete) {
-            ctx.drawImage(shredderImg, this.x - size/2, this.y - size/2, size, size);
-        } else {
-            // Fallback
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-            ctx.fillStyle = '#34495e';
-            ctx.fill();
-        }
+    if (img && img.complete) {
+        ctx.drawImage(img, this.x - size/2, this.y - size/2, size, size);
+    } else {
+        // Agar image load nahi hui to purana circle dikhana (Backup)
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+        ctx.fillStyle = '#34495e';
+        ctx.fill();
+        
+        // Eyes (Shadow look)
+        ctx.fillStyle = 'red';
+        ctx.beginPath();
+        ctx.arc(this.x - 5, this.y - 2, 3, 0, Math.PI*2);
+        ctx.arc(this.x + 5, this.y - 2, 3, 0, Math.PI*2);
+        ctx.fill();
     }
+}
 
     update() {
         this.draw();
